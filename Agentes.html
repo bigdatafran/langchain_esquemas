@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<title>Agentes</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+#mindmap {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+.markmap-dark {
+  background: #27272a;
+  color: white;
+}
+.card { background: #f3eeee; border: 1px solid #262626; padding: 0px; border-radius: 20px; max-width: 600px; text-align: center; margin-top: 60px;}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/style.css">
+</head>
+<body>
+    <center>
+<div class="card">
+ <a href="index.html">← Ir a P&aacute;gina principal</a> 
+ </div>
+ </center>
+<svg id="mindmap"></svg>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/dist/browser/index.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/index.js"></script><script>(()=>{setTimeout(()=>{const{markmap:S,mm:Q}=window,$=new S.Toolbar;$.attach(Q);const I=$.render();I.setAttribute("style","position:absolute;bottom:20px;right:20px"),document.body.append(I)})})()</script><script>((l,U,M,R)=>{const N=l();window.mm=N.Markmap.create("svg#mindmap",(U||N.deriveOptions)(R),M),window.matchMedia("(prefers-color-scheme: dark)").matches&&document.documentElement.classList.add("markmap-dark")})(()=>window.markmap,null,{"content":"Agentes","children":[{"content":"1. <strong>Definici&#xf3;n de Agentes</strong>","children":[{"content":"Los agentes <strong>combinan modelos de lenguaje con herramientas</strong> para crear sistemas capaces de razonar sobre tareas y decidir qu&#xe9; acciones tomar de forma iterativa.","children":[],"payload":{"tag":"li","lines":"9,10"}},{"content":"Utilizan el motor de ejecuci&#xf3;n de <strong>grafos de LangGraph</strong>, donde los nodos representan pasos y las aristas definen el flujo de informaci&#xf3;n.","children":[],"payload":{"tag":"li","lines":"10,11"}},{"content":"Un agente se ejecuta en un bucle hasta alcanzar una condici&#xf3;n de parada, como emitir un resultado final o llegar a un l&#xed;mite de iteraciones.","children":[],"payload":{"tag":"li","lines":"11,13"}}],"payload":{"tag":"h3","lines":"8,9"}},{"content":"2. <strong>Componentes N&#xfa;cleo</strong>","children":[{"content":"<strong>Modelo</strong>: Es el motor de razonamiento del agente. Puede ser <strong>est&#xe1;tico</strong> (configurado una vez al inicio) o <strong>din&#xe1;mico</strong> (seleccionado en tiempo de ejecuci&#xf3;n mediante middleware para optimizar costos o l&#xf3;gica).","children":[],"payload":{"tag":"li","lines":"14,15"}},{"content":"<strong>Herramientas</strong>: Otorgan al agente la capacidad de realizar acciones externas.","children":[{"content":"<strong>Est&#xe1;ticas</strong>: Definidas al crear el agente.","children":[],"payload":{"tag":"li","lines":"16,17"}},{"content":"<strong>Din&#xe1;micas</strong>: Se modifican en tiempo de ejecuci&#xf3;n seg&#xfa;n permisos, estado de la conversaci&#xf3;n o descubrimiento mediante servidores MCP.","children":[],"payload":{"tag":"li","lines":"17,18"}}],"payload":{"tag":"li","lines":"15,18"}},{"content":"<strong>Prompt del Sistema</strong>: Define el comportamiento y enfoque del agente. Puede ser din&#xe1;mico para adaptarse al contexto espec&#xed;fico de la ejecuci&#xf3;n.","children":[],"payload":{"tag":"li","lines":"18,19"}},{"content":"<strong>Nombre</strong>: Identificador opcional (preferiblemente en <em>snake_case</em>) usado como ID de nodo en sistemas multi-agente.","children":[],"payload":{"tag":"li","lines":"19,21"}}],"payload":{"tag":"h3","lines":"13,14"}},{"content":"3. <strong>L&#xf3;gica de Ejecuci&#xf3;n (ReAct)</strong>","children":[{"content":"Los agentes siguen el patr&#xf3;n <strong>ReAct</strong> (<em>Reasoning + Acting</em>), alternando entre pasos de razonamiento y llamadas a herramientas.","children":[],"payload":{"tag":"li","lines":"22,23"}},{"content":"El flujo t&#xed;pico incluye: <strong>Entrada</strong> -&gt; <strong>Razonamiento</strong> -&gt; <strong>Acci&#xf3;n</strong> -&gt; <strong>Observaci&#xf3;n</strong> -&gt; <strong>Resultado final</strong>.","children":[],"payload":{"tag":"li","lines":"23,25"}}],"payload":{"tag":"h3","lines":"21,22"}},{"content":"4. <strong>Invocaci&#xf3;n y Memoria</strong>","children":[{"content":"<strong>Invocaci&#xf3;n</strong>: Se realiza enviando una actualizaci&#xf3;n (mensajes) al <strong>Estado</strong> (<em>State</em>) del agente mediante la API de LangGraph.","children":[],"payload":{"tag":"li","lines":"26,27"}},{"content":"<strong>Memoria a corto plazo</strong>: El agente mantiene autom&#xe1;ticamente el historial de conversaci&#xf3;n en su estado.","children":[],"payload":{"tag":"li","lines":"27,28"}},{"content":"<strong>Esquemas de estado personalizados</strong>: Permiten recordar informaci&#xf3;n adicional durante la sesi&#xf3;n utilizando tipos <code>TypedDict</code>.","children":[],"payload":{"tag":"li","lines":"28,30"}}],"payload":{"tag":"h3","lines":"25,26"}},{"content":"5. <strong>Conceptos Avanzados</strong>","children":[{"content":"<strong>Salida Estructurada</strong>: Permite que el agente responda en formatos espec&#xed;ficos.","children":[{"content":"<strong>ProviderStrategy</strong>: Utiliza la capacidad nativa del proveedor del modelo.","children":[],"payload":{"tag":"li","lines":"32,33"}},{"content":"<strong>ToolStrategy</strong>: Usa llamadas a herramientas artificiales como alternativa cuando no hay soporte nativo.","children":[],"payload":{"tag":"li","lines":"33,34"}}],"payload":{"tag":"li","lines":"31,34"}},{"content":"<strong>Streaming</strong>: Capacidad de transmitir mensajes intermedios para mostrar el progreso antes del resultado final.","children":[],"payload":{"tag":"li","lines":"34,35"}},{"content":"<strong>Middleware</strong>: Proporciona extensibilidad para inyectar contexto, aplicar reglas de seguridad (<em>guardrails</em>), manejar errores de herramientas o registrar anal&#xed;ticas.","children":[],"payload":{"tag":"li","lines":"35,36"}}],"payload":{"tag":"h3","lines":"30,31"}}]},{"colorFreezeLevel":2,"maxWidth":500})</script>
+</body>
+</html>
