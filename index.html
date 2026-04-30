@@ -1,138 +1,367 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LangChain & LangGraph Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --color-tech-bg: #0A0A0A;
-            --color-tech-card: #141414;
-            --color-tech-line: #262626;
-            --color-brand-primary: #10B981;
-            --color-brand-secondary: #3B82F6;
-        }
-        body {
-            background-color: var(--color-tech-bg);
-            color: white;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
-        .tech-grid {
-            background-size: 40px 40px;
-            background-image: 
-                linear-gradient(to right, var(--color-tech-line) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--color-tech-line) 1px, transparent 1px);
-        }
-        .glow {
-            filter: blur(100px);
-            z-index: 0;
-        }
-        .card-hover:hover {
-            border-color: rgba(16, 185, 129, 0.5);
-            background-color: var(--color-tech-card);
-            transform: translateY(-2px);
-        }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LangChain & LangGraph — Documentación</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e0a;
+      --surface: #111611;
+      --border: #1e2b1e;
+      --accent: #5dff8a;
+      --accent-dim: #2a6640;
+      --text: #d4e8d4;
+      --muted: #4a6450;
+      --card-bg: #0d150d;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Grid background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(93,255,138,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(93,255,138,.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Glow blob ── */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(93,255,138,.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 32px 100px;
+    }
+
+    /* ── Header ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--accent-dim);
+      border-radius: 2px;
+      padding: 4px 12px;
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp .5s ease forwards .1s;
+    }
+
+    .badge::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .4; transform: scale(.7); }
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp .6s ease forwards .2s;
+    }
+
+    h1 span.hl {
+      color: var(--accent);
+      position: relative;
+    }
+
+    h1 span.hl::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 2px;
+      height: 2px;
+      background: var(--accent);
+      opacity: .35;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 540px;
+      opacity: 0;
+      animation: fadeUp .6s ease forwards .35s;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 52px 0 40px;
+      opacity: 0;
+      animation: fadeUp .5s ease forwards .45s;
+    }
+
+    .divider span {
+      font-size: 10px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Cards grid ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 32px 28px 28px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transition: border-color .25s, transform .25s;
+    }
+
+    .card:nth-child(1) { animation: fadeUp .55s ease forwards .55s; }
+    .card:nth-child(2) { animation: fadeUp .55s ease forwards .65s; }
+    .card:nth-child(3) { animation: fadeUp .55s ease forwards .75s; }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(93,255,138,.04) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .card:hover {
+      border-color: var(--accent-dim);
+      transform: translateY(-4px);
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: border-color .25s;
+    }
+
+    .card:hover .card-icon { border-color: var(--accent-dim); }
+
+    .card-label {
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--text);
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.75;
+      flex: 1;
+    }
+
+    .card-arrow {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--accent-dim);
+      letter-spacing: .08em;
+      margin-top: 8px;
+      transition: color .25s, gap .25s;
+    }
+
+    .card:hover .card-arrow {
+      color: var(--accent);
+      gap: 10px;
+    }
+
+    .card-arrow::after {
+      content: '→';
+      font-size: 14px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp .5s ease forwards .85s;
+    }
+
+    footer a {
+      color: var(--accent-dim);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Scanline overlay ── */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,.04) 3px,
+        rgba(0,0,0,.04) 4px
+      );
+    }
+  </style>
 </head>
-<body class="antialiased">
-    <!-- Fondo Decorativo -->
-    <div class="fixed inset-0 tech-grid opacity-20 pointer-events-none"></div>
-    <div class="fixed -top-[10%] -left-[10%] w-[40%] h-[40%] bg-emerald-500/10 glow rounded-full pointer-events-none"></div>
-    <div class="fixed -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-blue-500/10 glow rounded-full pointer-events-none"></div>
+<body>
 
-    <main class="relative z-10 max-w-6xl mx-auto px-6 py-20 lg:py-32">
-        <!-- Encabezado -->
-        <header class="mb-20">
-            <div class="flex items-center gap-2 mb-6">
-                <div class="px-3 py-1 rounded-full border border-[#262626] bg-[#141414]/50 text-[10px] font-mono text-emerald-400 tracking-wider uppercase">
-                    Esquemas v1.0
-                </div>
-            </div>
-            <h1 class="text-5xl lg:text-7xl font-bold tracking-tight mb-6">
-                LangChain <span class="text-[#262626] text-4xl lg:text-5xl mx-2">&</span> 
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">
-                    LangGraph
-                </span>
-            </h1>
-            <p class="text-gray-400 text-lg max-w-2xl leading-relaxed font-light">
-                Esquemas profesionales sobre aspectos relacionados con las tecnologías de LangChain y LangGraph
-            </p>
-        </header>
+  <div class="scanlines"></div>
 
-        <!-- Rejilla de Páginas -->
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Agentes -->
-            <a href="Agentes.html" class="card-hover group relative block p-8 rounded-2xl border border-[#262626] bg-[#141414]/30 transition-all duration-300">
-                <div class="mb-6 flex justify-between items-start">
-                    <div class="p-3 rounded-xl bg-[#0A0A0A] border border-[#262626] group-hover:border-emerald-500/30 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
-                    </div>
-                    <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">LangChain</span>
-                </div>
-                <h3 class="text-xl font-semibold mb-3 group-hover:text-emerald-400 transition-colors">Agentes</h3>
-                <p class="text-gray-500 text-sm leading-relaxed mb-6">Configuración y orquestación de agentes inteligentes utilizando LangGraph.</p>
-                <div class="flex items-center text-xs font-mono text-emerald-400 font-medium group-hover:gap-2 transition-all">
-                    ACCEDER DOCUMENTO <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1"><path d="m9 18 6-6-6-6"/></svg>
-                </div>
-                <div class="absolute inset-0 rounded-2xl bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-            </a>
+  <div class="wrapper">
 
-            <!-- Messages -->
-            <a href="messages.html" class="card-hover group relative block p-8 rounded-2xl border border-[#262626] bg-[#141414]/30 transition-all duration-300">
-                <div class="mb-6 flex justify-between items-start">
-                    <div class="p-3 rounded-xl bg-[#0A0A0A] border border-[#262626] group-hover:border-blue-500/30 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    </div>
-                    <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">LangChain</span>
-                </div>
-                <h3 class="text-xl font-semibold mb-3 group-hover:text-blue-400 transition-colors">Messages</h3>
-                <p class="text-gray-500 text-sm leading-relaxed mb-6">Gestión de historial, esquemas de mensajes y estados en cadenas.</p>
-                <div class="flex items-center text-xs font-mono text-blue-400 font-medium group-hover:gap-2 transition-all">
-                    ACCEDER DOCUMENTO <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1"><path d="m9 18 6-6-6-6"/></svg>
-                </div>
-                <div class="absolute inset-0 rounded-2xl bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-            </a>
 
-             <!-- Tools -->
-            <a href="Tools.html" class="card-hover group relative block p-8 rounded-2xl border border-[#262626] bg-[#141414]/30 transition-all duration-300">
-                <div class="mb-6 flex justify-between items-start">
-                    <div class="p-3 rounded-xl bg-[#0A0A0A] border border-[#262626] group-hover:border-blue-500/30 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    </div>
-                    <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">LangChain</span>
-                </div>
-                <h3 class="text-xl font-semibold mb-3 group-hover:text-blue-400 transition-colors">Tools</h3>
-                <p class="text-gray-500 text-sm leading-relaxed mb-6">Aprende a extender agentes con Tools</p>
-                <div class="flex items-center text-xs font-mono text-blue-400 font-medium group-hover:gap-2 transition-all">
-                    ACCEDER DOCUMENTO <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1"><path d="m9 18 6-6-6-6"/></svg>
-                </div>
-                <div class="absolute inset-0 rounded-2xl bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-            </a>
-            <!-- Próximamente -->
-            <div class="p-8 rounded-2xl border border-dashed border-[#262626] flex flex-col items-center justify-center text-center opacity-60">
-                <div class="p-4 rounded-full bg-[#262626]/30 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#525252" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </div>
-                <h3 class="text-gray-500 font-medium mb-1">Próximamente</h3>
-                <p class="text-gray-600 text-[10px] uppercase font-mono tracking-tighter">Nuevas secciones en camino</p>
-            </div>
-        </section>
+    <h1>
+      <span class="hl">Lang</span>Chain<br>
+      &amp; LangGraph
+    </h1>
 
-        <!-- Pie de página -->
-        <footer class="mt-32 pt-8 border-t border-[#262626] flex flex-wrap gap-8 items-center justify-between text-gray-100 text-[10px] font-mono tracking-widest uppercase">
-            <div class="flex items-center gap-6">
-                <span>Francisco Rodríguez Redondo</span>
-                <span><a href="contacto.html" >Formulario de contacto</a></span>
-            </div>
-            <div>© 2026 AI Systems Director</div>
-        </footer>
-    </main>
+    <p class="subtitle">
+        Esquemas explicativos sobre diferentes aspectos relacionados  con 
+        el uso la tecnología LangChain o LangGraph tan utilizada en el mundo de la IA.
+   
+    </p>
+
+    <div class="divider"><span>Secciones disponibles</span></div>
+
+    <div class="cards">
+
+      <a href="Agentes.html" class="card">
+        <div class="card-icon">🤖</div>
+        <div class="card-label">LangGraph</div>
+        <div class="card-title">Agentes</div>
+        <p class="card-desc">
+          Diseño y orquestación de agentes autónomos con grafos de estado,
+          ciclos de razonamiento y control de flujo.
+        </p>
+        <span class="card-arrow">Leer sección</span>
+      </a>
+
+      <a href="messages.html" class="card">
+        <div class="card-icon">💬</div>
+        <div class="card-label">LangChain</div>
+        <div class="card-title">Messages</div>
+        <p class="card-desc">
+          Tipos de mensajes en LangChain: HumanMessage, AIMessage, SystemMessage
+          y cómo estructurar conversaciones con LLMs.
+        </p>
+        <span class="card-arrow">Leer sección</span>
+      </a>
+
+      <a href="Tools.html" class="card">
+        <div class="card-icon">🔧</div>
+        <div class="card-label">LangChain</div>
+        <div class="card-title">Tools</div>
+        <p class="card-desc">
+          Definición, registro y uso de herramientas personalizadas que los
+          agentes pueden invocar para extender sus capacidades.
+        </p>
+        <span class="card-arrow">Leer sección</span>
+      </a>
+
+    </div>
+
+    <footer>
+      <span>LangChain &amp; LangGraph Docs</span>
+      <span>
+        <a href="https://python.langchain.com" target="_blank">langchain.com</a>
+        &nbsp;·&nbsp;
+        <a href="https://langchain-ai.github.io/langgraph/" target="_blank">langgraph docs</a>
+      </span>
+    </footer>
+
+  </div>
 </body>
 </html>
-
